@@ -1,0 +1,14 @@
+/* 
+   Made by AJ Slaghuis for Appsvoordemocratie
+   2012
+*/
+
+SELECT `Woord`, SUM(Aantal) as `Aantal_Keer` 
+FROM `Document_WordFrequencyCount` 
+GROUP BY `Woord`
+ORDER BY SUM(Aantal) DESC
+INTO OUTFILE '/tmp/word_freq_all.tsv'
+FIELDS TERMINATED BY ' '
+ENCLOSED BY ''
+LINES TERMINATED BY '\n'
+;

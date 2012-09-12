@@ -1,0 +1,34 @@
+/* 
+   Made by AJ Slaghuis for Appsvoordemocratie
+   2012
+*/
+
+
+
+
+/* 
+****
+**** CREATE TABLES FOR PARLIS
+*/
+
+
+/* Document Frequency Count based on [[filename]] */
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Document_WordFrequencyCount`(`ID`VARCHAR(64) NOT NULL,
+`Aantal` INT NOT NULL,`Woord`VARCHAR(4000) NOT NULL ,
+INDEX (ID)
+ );
+
+/*
+****
+**** IMPORT TABLES FOR PARLIS
+*/
+
+
+/*  Document Frequency Count based on [[filename]] */
+
+LOAD DATA LOCAL INFILE '/root/hd2/pub/word_freq.tsv'  INTO TABLE
+`parlis`.`Document_WordFrequencyCount`
+FIELDS TERMINATED BY ' ' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 0 LINES;
+
