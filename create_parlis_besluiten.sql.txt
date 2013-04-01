@@ -1,0 +1,134 @@
+/* 
+   Made by AJ Slaghuis en Breyten Ernsting for Appsvoordemocratie
+   2012
+*/
+
+/* 
+CREATE SCHEMA 
+*/
+CREATE SCHEMA IF NOT EXISTS `parlis`;
+
+/* 
+****
+****  TABLES
+*/
+
+/* Besluiten*/
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Besluiten` (
+  `ID` VARCHAR(64) NOT NULL,
+  `Soort` VARCHAR(1) NOT NULL,
+  `StemmingsSoort` VARCHAR(4000) NULL,
+  `VoorstelText` varchar(1) NOT NULL,
+  `BesluitText` VARCHAR(4000) NULL,
+  `AangemaaktOp` DATETIME NULL,
+  `GewijzigdOp` DATETIME NULL,
+  `Opmerking` VARCHAR(4000) NULL,
+  `Status` VARCHAR(4000) NULL,
+  PRIMARY KEY(`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Besluiten/Besluiten.tsv' INTO TABLE
+`parlis`.`Besluiten`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+/* Stemmingen*/
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Besluiten_Stemmingen` (
+  `ID` VARCHAR(64) NOT NULL, 
+  `Soort` VARCHAR(4000) NOT NULL, 
+  `FractieGrootte` INT NULL, 
+  `FractieStemmen`  INT NULL,
+  `ActorNaam` VARCHAR(200) NOT NULL, 
+  `ActorPartij` VARCHAR(200) NOT NULL,
+  `Vergissing` BOOL NULL,
+  `AangemaaktOp` DATETIME NULL,
+  `GewijzigdOp` DATETIME NULL, 
+  `SID_ActorLid`VARCHAR(200) NOT NULL,
+  `SID_ActorFractie` VARCHAR(200) NOT NULL,
+  `SID_Besluit` VARCHAR(64) NOT NULL,
+  PRIMARY KEY(`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Besluiten/Besluiten_Stemmingen.tsv' INTO TABLE
+`parlis`.`Besluiten_Stemmingen`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+/* Agendapunten */
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Besluiten_Agendapunt`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `Aanvangstijd`DATETIME NULL,
+  `EindTijd`DATETIME NULL,
+  `Volgorde` int null,
+  `Rubriek` varchar(4000) null,
+  `Noot` varchar(4000) null,
+  `Status` varchar(4000) null,
+  `AangemaaktOp` datetime null,
+  `GewijzigdOp` datetime null,
+  `SID_Activiteit` varchar(64) not null,
+  `SID_Besluit` VARCHAR(64) NOT NULL,
+  PRIMARY KEY(`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Besluiten/Besluiten_Agendapunt.tsv' INTO TABLE
+`parlis`.`Besluiten_Agendapunt`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+/* Statussen */
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Besluiten_Statussen` (
+  `ID`VARCHAR(64) NOT NULL,
+  `Soort` VARCHAR(4000),
+  `Datum` DATETIME NULL,
+  `AangemaaktOp` datetime null,
+  `GewijzigdOp` datetime null,
+  `SID_Besluit` VARCHAR(64) NOT NULL,
+  PRIMARY KEY(`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Besluiten/Besluiten_Statussen.tsv' INTO TABLE
+`parlis`.`Besluiten_Statussen`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+/*
+  Zaken
+  Somehow KamerStukDossierId is missing
+  This will be updated!
+*/
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Besluiten_Zaak`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Soort`varchar(4000) NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `CiteerTitel`VARCHAR(4000) NULL,
+  `Alias`VARCHAR(4000) NULL,
+  `Status`VARCHAR(4000) NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `DatumStart`DATETIME NOT NULL,
+  `Kamer`int  NULL,
+  `GrondslagVoorhang`VARCHAR(4000) NULL,
+  `Termijn`datetime null,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  /*`kamerStukDossierId`VARCHAR(64) NULL, not available*/
+  `VolgNummer`int not  NULL,
+  `HuidigeBehandelStatus` varchar(1) not null,
+  `Afgedaan` bool null,
+  `GrootProject` bool null,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `SID_Besluit`VARCHAR(64) NOT NULL,
+  PRIMARY KEY (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Besluiten/Besluiten_Zaak.tsv' INTO TABLE
+`parlis`.`Besluiten_Zaak`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
