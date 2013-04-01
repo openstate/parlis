@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `parlis`.`Activiteiten_Agendapunten`(
 );
 
 LOAD DATA LOCAL INFILE  'udata/Activiteiten/Activiteiten_Agendapunten.tsv' INTO TABLE
-`parlis`.`/Activiteiten_Agendapunten`
+`parlis`.`Activiteiten_Agendapunten`
 FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
 LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
 

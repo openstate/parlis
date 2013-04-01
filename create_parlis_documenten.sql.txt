@@ -1,0 +1,202 @@
+/* Documenten */
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Documenten`(
+  `ID`VARCHAR(64) NOT NULL,
+  `DocumentNummer`VARCHAR(50) NOT NULL,
+/*  `kamerStukDossierId`VARCHAR(64) NULL, */
+  `Titel`VARCHAR(4000) NULL,
+  `Soort`varchar(4000) NULL,
+  `Onderwerp`varchar(4000) NULL,
+  `Datum`DATETIME NOT NULL,
+  `VolgNummer`int not  NULL,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `Kamer`int  NULL,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `Citeertitel`varchar(200)  NULL,
+  `Alias`varchar(200)  NULL,
+  `DatumRegistratie`DATETIME NULL,
+  `DatumOntvangst`DATETIME NULL,
+  `AanhangselNummer`varchar(4000) NULL,
+  `KenmerkAfzender`varchar(4000) NULL,
+  PRIMARY KEY (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Documenten/Documenten.tsv' INTO TABLE `parlis`.`Documenten`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' LINES TERMINATED 
+BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+/* Activiteiten*/
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Documenten_Activiteiten`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Onderwerp`VARCHAR(4000)NULL,
+  `Soort`VARCHAR(4000) NULL,
+  `DatumSoort`varchar(4000) NULL,
+  `Datum` DATETIME NULL,
+  `Aanvangstijd`DATETIME NULL,
+  `EindTijd`DATETIME NULL,
+  `Locatie`varchar(4000)  NULL,
+  `Besloten`BOOL NULL,
+  `Status`varchar(4000)  NULL,
+  `Vergaderjaar`varchar(4000)  NULL,
+  `Kamer`varchar(4000)  NULL,
+  `Noot`varchar(4000)  NULL,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `VRSNummer`varchar(4000) NULL,
+  `Voortouwnaam`varchar(200) NULL,
+  `Voortouwafkorting`varchar(50) NULL,
+  `Voortouwkortenaam`varchar(50)NULL,
+  `SID_Document` varchar(64) not null,
+  PRIMARY KEY (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Documenten/Documenten_Activiteiten.tsv' INTO TABLE `parlis`.`Documenten_Activiteiten`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' LINES TERMINATED 
+BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+/* Agendapunten */
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Documenten_Agendapunten`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `Aanvangstijd`DATETIME NULL,
+  `EindTijd`DATETIME NULL,
+  `Volgorde` int null,
+  `Rubriek` varchar(4000) null,
+  `Noot` varchar(4000) null,
+  `Status` varchar(4000) null,
+  `AangemaaktOp` datetime null,
+  `GewijzigdOp` datetime null,
+  `SID_Document` varchar(64) not null,
+  PRIMARY KEY(`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Documenten/Documenten_Agendapunten.tsv' INTO TABLE
+`parlis`.`Documenten_Agendapunten`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Documenten_BijlageDocumenten`(
+  `ID`VARCHAR(64) NOT NULL,
+  `DocumentNummer`VARCHAR(50) NOT NULL,
+/*  `kamerStukDossierId`VARCHAR(64) NULL, */
+  `Titel`VARCHAR(4000) NULL,
+  `Soort`varchar(4000) NULL,
+  `Onderwerp`varchar(4000) NULL,
+  `Datum`DATETIME NOT NULL,
+  `VolgNummer`int not  NULL,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `Kamer`int  NULL,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `Citeertitel`varchar(200)  NULL,
+  `Alias`varchar(200)  NULL,
+  `DatumRegistratie`DATETIME NULL,
+  `DatumOntvangst`DATETIME NULL,
+  `AanhangselNummer`varchar(4000) NULL,
+  `KenmerkAfzender`varchar(4000) NULL,
+  `SID_Document` varchar(64) not null,
+  PRIMARY KEY (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Documenten/Documenten_BijlageDocumenten.tsv' INTO TABLE
+`parlis`.`Documenten_BijlageDocumenten`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Documenten_BronDocumenten`(
+  `ID`VARCHAR(64) NOT NULL,
+  `DocumentNummer`VARCHAR(50) NOT NULL,
+/*  `kamerStukDossierId`VARCHAR(64) NULL, */
+  `Titel`VARCHAR(4000) NULL,
+  `Soort`varchar(4000) NULL,
+  `Onderwerp`varchar(4000) NULL,
+  `Datum`DATETIME NOT NULL,
+  `VolgNummer`int not  NULL,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `Kamer`int  NULL,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `Citeertitel`varchar(200)  NULL,
+  `Alias`varchar(200)  NULL,
+  `DatumRegistratie`DATETIME NULL,
+  `DatumOntvangst`DATETIME NULL,
+  `AanhangselNummer`varchar(4000) NULL,
+  `KenmerkAfzender`varchar(4000) NULL,
+  `SID_Document` varchar(64) not null,
+  PRIMARY KEY (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Documenten/Documenten_BronDocumenten.tsv' INTO TABLE
+`parlis`.`Documenten_BronDocumenten`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Document_Actoren`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Naam`VARCHAR(200) NULL,
+  `Functie`varchar(200) NULL,
+  `Partij`VARCHAR(200) NULL,
+  `Relatie`VARCHAR(4000) NULL,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `SID_Document` varchar(64) not null,
+  INDEX (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Documenten/Document_DocumentActoren.tsv' INTO TABLE `parlis`.`Document_Actoren`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' LINES TERMINATED 
+BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+
+CREATE TABLES IF NOT EXISTS `parlis`.`Document_Versies` (
+  `ID`VARCHAR(64) NOT NULL,
+  `Status`VARCHAR(4000) NULL,
+  `Versienummer` INT NOT NULL,
+  `Bestandsgrootte` INT NOT NULL,
+  `Extensie` varchar(50) NULL,
+  `Datum`DATETIME NULL,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,  
+  `SID_Document` varchar(64) not null,
+  INDEX (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Documenten/Document_DocumentVersies.tsv' INTO TABLE `parlis`.`Document_Versies`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' LINES TERMINATED 
+BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Documenten_Zaken`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Soort`varchar(4000) NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `CiteerTitel`VARCHAR(4000) NULL,
+  `Alias`VARCHAR(4000) NULL,
+  `Status`VARCHAR(4000) NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `DatumStart`DATETIME NOT NULL,
+  `Kamer`int  NULL,
+  `GrondslagVoorhang`VARCHAR(4000) NULL,
+  `Termijn`datetime null,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  /*`kamerStukDossierId`VARCHAR(64) NULL, not available*/
+  `VolgNummer`int not  NULL,
+  `HuidigeBehandelStatus` varchar(1) not null,
+  `Afgedaan` bool null,
+  `GrootProject` bool null,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `AgendapuntZakenVolgorde` INT NULL,
+  `SID_Document`VARCHAR(64) NOT NULL,
+   PRIMARY KEY (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Documenten/Documenten_Zaken.tsv' INTO TABLE `parlis`.`Documenten_Zaken` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
