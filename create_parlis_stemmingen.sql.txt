@@ -1,0 +1,21 @@
+/* Stemmingen*/
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Stemmingen` (
+  `ID` VARCHAR(64) NOT NULL, 
+  `Soort` VARCHAR(4000) NOT NULL, 
+  `FractieGrootte` INT NULL, 
+/*  `FractieStemmen`  INT NULL,*/
+  `ActorNaam` VARCHAR(200) NOT NULL, 
+  `ActorPartij` VARCHAR(200) NOT NULL,
+  `Vergissing` BOOL NULL,
+  `AangemaaktOp` DATETIME NULL,
+  `GewijzigdOp` DATETIME NULL, 
+  `SID_ActorLid`VARCHAR(200) NOT NULL,
+  `SID_ActorFractie` VARCHAR(200) NOT NULL,
+  PRIMARY KEY(`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Stemmingen/Stemmingen.tsv' INTO TABLE
+`parlis`.`Stemmingen`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;

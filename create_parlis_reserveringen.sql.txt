@@ -1,0 +1,75 @@
+/* Reserveringen */
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Reserveringen` (
+  `SysCode`INT NOT NULL,
+  `Nummer` VARCHAR(50) NULL,
+  `StandaardCode` VARCHAR(50) NULL,
+  `StandaardNaam` VARCHAR(50) NULL,
+  `VergaderSoortCode` VARCHAR(50) NULL,
+  `VergaderSoortNaam` VARCHAR(50) NULL,
+  `StartDatumTijd` DATETIME NULL,
+  `EindDatumTijd` DATETIME NULL,
+  `Omschrijving` VARCHAR(4000) NULL,
+  `MelderCode` VARCHAR(50) NULL,
+  `MelderNaam` VARCHAR(50) NULL,
+  `GriffierCode` VARCHAR(50) NULL,
+  `GriffierNaam` VARCHAR(50) NULL,
+  `VoortouwcommissieCode` VARCHAR(50) NULL,
+  `VoortouwCommissieNaam` VARCHAR(50) NULL,
+  `InitiatorCode` VARCHAR(50) NULL,
+  `InitiatorNaam` VARCHAR(50) NULL,
+  `Toelightingen` VARCHAR(4000),
+  `AanmakerCode` VARCHAR(50) NULL,
+  `AanmakerNaam` VARCHAR(50) NULL,
+  `AantalPersonen` INT NULL,
+  `AanvragerCode` VARCHAR(50) NULL,
+  `AanvragerNaam` VARCHAR(50) NULL,
+  `DatumGemeld` DATETIME NULL,
+  `StatusCode` VARCHAR(50) NULL,
+  `StatusNaam` VARCHAR(50) NULL,
+  `ActiviteitSoortCode` VARCHAR(50) NULL,
+  `ActiviteitSoortNaam` VARCHAR(50) NULL,
+  `Toelighting` VARCHAR(4000),
+  `Catering` VARCHAR(4000),
+  `ActiviteitNummer` VARCHAR(4000),
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  PRIMARY KEY(`SysCode`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Besluiten/Reserveringen.tsv' INTO TABLE
+`parlis`.`Reserveringen`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+/* Activiteiten*/
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Reserveringen_Activiteiten`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Onderwerp`VARCHAR(4000)NULL,
+  `Soort`VARCHAR(4000) NULL,
+  `DatumSoort`varchar(4000) NULL,
+  `Datum` DATETIME NULL,
+  `Aanvangstijd`DATETIME NULL,
+  `EindTijd`DATETIME NULL,
+  `Locatie`varchar(4000)  NULL,
+  `Besloten`BOOL NULL,
+  `Status`varchar(4000)  NULL,
+  `Vergaderjaar`varchar(4000)  NULL,
+  `Kamer`varchar(4000)  NULL,
+  `Noot`varchar(4000)  NULL,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `VRSNummer`varchar(4000) NULL,
+  `Voortouwnaam`varchar(200) NULL,
+  `Voortouwafkorting`varchar(50) NULL,
+  `Voortouwkortenaam`varchar(50)NULL,
+  `SID_Reservering` VARCHAR(50) NULL,
+  PRIMARY KEY (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Besluiten/Reserveringen_Activiteiten.tsv' INTO TABLE
+`parlis`.`Reserveringen_Activiteiten`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
