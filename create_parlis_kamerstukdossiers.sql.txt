@@ -1,0 +1,78 @@
+/* Zaak-KamerstukDossier */
+
+CREATE TABLE IF NOT EXISTS `parlis`.`KamerstukDossiers`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `Citeertitel`VARCHAR(4000) NULL,
+  `Alias`VARCHAR(4000) NULL,
+  `Nummer` int null,
+  `Toevoeging` VARCHAR(50) NULL,
+  `HoogsteVolgnummer` int null,
+  `Afgesloten` bool null,
+  `Kamer`varchar(4000) null,
+  `AangemaaktOp` datetime null,
+  `GewijzigdOp` datetime null,
+  INDEX (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Kamerstukdossiers/KamerstukDossiers.tsv' INTO TABLE `parlis`.`KamerstukDossiers` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+CREATE TABLE IF NOT EXISTS `parlis`.`KamerstukDossiers_Zaken`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Soort`varchar(4000) NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `CiteerTitel`VARCHAR(4000) NULL,
+  `Alias`VARCHAR(4000) NULL,
+  `Status`VARCHAR(4000) NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `DatumStart`DATETIME NOT NULL,
+  `Kamer`int  NULL,
+  `GrondslagVoorhang`VARCHAR(4000) NULL,
+  `Termijn`datetime null,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `VolgNummer`int not  NULL,
+  `HuidigeBehandelStatus` varchar(1) not null,
+  `Afgedaan` bool null,
+  `GrootProject` bool null,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `AgendapuntZakenVolgorde` INT NULL,
+  `SID_KamerstukDossier`VARCHAR(64) NOT NULL,
+   PRIMARY KEY (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/KamerstukDossiers_Zaken.tsv' INTO TABLE `parlis`.`KamerstukDossiers_Zaken` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+/* Documenten */
+
+CREATE TABLE IF NOT EXISTS `parlis`.`KamerstukDossiers_Documenten`(
+  `ID`VARCHAR(64) NOT NULL,
+  `DocumentNummer`VARCHAR(50) NOT NULL,
+/*  `kamerStukDossierId`VARCHAR(64) NULL, */
+  `Titel`VARCHAR(4000) NULL,
+  `Soort`varchar(4000) NULL,
+  `Onderwerp`varchar(4000) NULL,
+  `Datum`DATETIME NOT NULL,
+  `VolgNummer`int not  NULL,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `Kamer`int  NULL,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `Citeertitel`varchar(200)  NULL,
+  `Alias`varchar(200)  NULL,
+  `DatumRegistratie`DATETIME NULL,
+  `DatumOntvangst`DATETIME NULL,
+  `AanhangselNummer`varchar(4000) NULL,
+  `KenmerkAfzender`varchar(4000) NULL,
+  `SID_KamerstukDossier` varchar(64) not null,
+  PRIMARY KEY (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/KamerstukDossiers_Documenten.tsv' INTO TABLE `parlis`.`KamerstukDossiers_Documenten` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
