@@ -13,80 +13,6 @@ CREATE SCHEMA IF NOT EXISTS `parlis`;
 ****  TABLES
 */
 
-/* Activiteiten*/
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Activiteiten`(`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,`Onderwerp`VARCHAR(4000)NULL,`Soort`VARCHAR(4000)
-NULL, `DatumSoort`varchar(4000) NULL,
-`Aanvangstijd`DATETIME NULL,`EindTijd`DATETIME NULL,
-`Locatie`varchar(4000)  NULL,`Besloten`BOOL NULL,
-`Status`varchar(4000)  NULL,`Vergaderjaar`varchar(4000)  NULL,
-`Kamer`varchar(4000)  NULL,`Noot`varchar(4000)  NULL,
-`AangemaaktOp`DATETIME NULL,`GewijzigdOp`DATETIME NULL,
-`VRSNummer`varchar(4000) NULL,`Voortouwnaam`varchar(200) NULL,
-`Voortouwafkorting`varchar(50) NULL,`Voortouwkortenaam`varchar(50)NULL,
- PRIMARY KEY (`ID`) );
-
-
-
-/* Agendapunten */
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Agendapunten`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`Aanvangstijd`DATETIME NULL,`EindTijd`DATETIME NULL,
-`Volgorde` int null,
-`Rubriek` varchar(4000) null,
-`Noot` varchar(4000) null,
-`Status` varchar(4000) null,
-`AangemaaktOp` datetime null,
-`GewijzigdOp` datetime null,
-`SID_Activiteit` varchar(64) not null,
-PRIMARY KEY (`ID`) );
-
-
-
-/* Besluiten*/
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Besluiten` (`ID` VARCHAR(64) NOT NULL,
-`Soort` VARCHAR(1) NOT NULL,  `StemmingsSoort` VARCHAR(4000) NULL,
-`VoorstelText` varchar(1) NOT NULL, `BesluitText` VARCHAR(4000) NULL,
-`AangemaaktOp` DATETIME NULL, `GewijzigdOp` DATETIME NULL,
-`Opmerking` VARCHAR(4000) NULL ,`Status` VARCHAR(4000) NULL,PRIMARY KEY
-(`ID`));
-
-
-
-
-/* Documenten */
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Documenten`(`ID`VARCHAR(64) NOT NULL,
-`DocumentNummer`VARCHAR(50) NOT NULL,`kamerStukDossierId`VARCHAR(64)
-NULL,`Titel`VARCHAR(4000) NULL,
-`Soort`varchar(4000) NULL,
-`Onderwerp`varchar(4000) NULL,`Datum`DATETIME NOT NULL,
-`VolgNummer`int not  NULL,`Vergaderjaar`varchar(9) NOT NULL,
-`Kamer`int  NULL,`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,`Citeertitel`varchar(200)  NULL,
-`Alias`varchar(200)  NULL,`DatumRegistratie`DATETIME NULL,
-`DatumOntvangst`DATETIME NULL,`AanhangselNummer`varchar(4000) NULL,
-`KenmerkAfzender`varchar(4000) NULL,
- PRIMARY KEY (`ID`) );
-
-
-
-/* Stemmingen*/
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Stemmingen` (`ID` VARCHAR(64) NOT NULL, 
-`Soort` VARCHAR(4000) NOT NULL, `FractieGrootte` INT NULL, 
-`FractieStemmen`  INT NULL,  `ActorNaam` VARCHAR(200) NOT NULL, 
-`ActorPartij` VARCHAR(200) NOT NULL,`Vergissing` BOOL NULL,
-   `AangemaaktOp` DATETIME NULL, `GewijzigdOp` DATETIME NULL, 
-`SID_ActorLid`VARCHAR(200) NOT NULL,     `SID_ActorFractie` VARCHAR(200) NOT NULL,
-     `SID_Besluit` VARCHAR(64) NOT NULL ,PRIMARY KEY (`ID`) );
-
-
 /*
   Zaken
   Somehow KamerStukDossierId is missing
@@ -94,175 +20,34 @@ CREATE TABLE IF NOT EXISTS `parlis`.`Stemmingen` (`ID` VARCHAR(64) NOT NULL,
 */
 
 CREATE TABLE IF NOT EXISTS `parlis`.`Zaken`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Soort`varchar(4000) NULL,
-`Titel`VARCHAR(4000) NULL,
-`CiteerTitel`VARCHAR(4000) NULL,
-`Alias`VARCHAR(4000) NULL,
-`Status`VARCHAR(4000) NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`DatumStart`DATETIME NOT NULL,
-`Kamer`int  NULL,
-`GrondslagVoorhang`VARCHAR(4000) NULL,
-`Termijn`datetime null,
-`Vergaderjaar`varchar(9) NOT NULL,
-              /*`kamerStukDossierId`VARCHAR(64) NULL, not available*/
-`VolgNummer`int not  NULL,
-`HuidigeBehandelStatus` varchar(1) not null,
-`Afgedaan` bool null,
-`GrootProject` bool null,
-`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,
-/*`SID_Activiteit`VARCHAR(64) NOT NULL */ /* Removed: Backlink Added by SDK
- * ,*/
- PRIMARY KEY (`ID`) );
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Soort`varchar(4000) NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `CiteerTitel`VARCHAR(4000) NULL,
+  `Alias`VARCHAR(4000) NULL,
+  `Status`VARCHAR(4000) NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `DatumStart`DATETIME NOT NULL,
+  `Kamer`int  NULL,
+  `GrondslagVoorhang`VARCHAR(4000) NULL,
+  `Termijn`datetime null,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `VolgNummer`int not  NULL,
+  `HuidigeBehandelStatus` varchar(1) not null,
+  `Afgedaan` bool null,
+  `GrootProject` bool null,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `AgendapuntZakenVolgorde` INT NULL,
+   PRIMARY KEY (`ID`)
+);
 
  /* Zaken */
 
-
-/* 
-****
-**** CREATE TABLES FOR ACTIVITEIT RELATIES
-*/
-
-
-/* Activiteit_VoortgezetVanuit.tsv */
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Activiteit_VoortgezetVanuit`(`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,`Onderwerp`VARCHAR(4000) NULL,`Soort`VARCHAR(4000) NULL,
-`DatumSoort`varchar(4000) NULL,
-`Aanvangstijd`DATETIME NULL,`EindTijd`DATETIME NULL,
-`Locatie`varchar(4000)  NULL,`Besloten`BOOL NULL,
-`Status`varchar(4000)  NULL,`Vergaderjaar`varchar(4000)  NULL,
-`Kamer`varchar(4000)  NULL,`Noot`varchar(4000)  NULL,
-`AangemaaktOp`DATETIME NULL,`GewijzigdOp`DATETIME NULL,
-`VRSNummer`varchar(4000) NULL,`Voortouwnaam`varchar(200) NULL,
-`Voortouwafkorting`varchar(50) NULL,`Voortouwkortenaam`varchar(50)NULL ,
- INDEX (`ID`)  
- ) ;
-
-
-/* Activiteit_VoortgezetIn.tsv */
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Activiteit_VoortgezetIn`(`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,`Onderwerp`VARCHAR(4000) NULL,`Soort`VARCHAR(4000) NULL,
-`DatumSoort`varchar(4000) NULL,
-`Aanvangstijd`DATETIME NULL,`EindTijd`DATETIME NULL,
-`Locatie`varchar(4000)  NULL,`Besloten`BOOL NULL,
-`Status`varchar(4000)  NULL,`Vergaderjaar`varchar(4000)  NULL,
-`Kamer`varchar(4000)  NULL,`Noot`varchar(4000)  NULL,
-`AangemaaktOp`DATETIME NULL,`GewijzigdOp`DATETIME NULL,
-`VRSNummer`varchar(4000) NULL,`Voortouwnaam`varchar(200) NULL,
-`Voortouwafkorting`varchar(50) NULL,`Voortouwkortenaam`varchar(50)NULL,
- INDEX (`ID`) );
-
-
-/* Activiteit_VervangenVanuit.tsv*/ 
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Activiteit_VervangenVanuit`(`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,`Onderwerp`VARCHAR(4000) NULL,`Soort`VARCHAR(4000) NULL,
-`DatumSoort`varchar(4000) NULL,
-`Aanvangstijd`DATETIME NULL,`EindTijd`DATETIME NULL,
-`Locatie`varchar(4000)  NULL,`Besloten`BOOL NULL,
-`Status`varchar(4000)  NULL,`Vergaderjaar`varchar(4000)  NULL,
-`Kamer`varchar(4000)  NULL,`Noot`varchar(4000)  NULL,
-`AangemaaktOp`DATETIME NULL,`GewijzigdOp`DATETIME NULL,
-`VRSNummer`varchar(4000) NULL,`Voortouwnaam`varchar(200) NULL,
-`Voortouwafkorting`varchar(50) NULL,`Voortouwkortenaam`varchar(50)NULL,
- INDEX (`ID`) );
-
-
-
-/* Activiteit_Documenten (identiek aan activiteit) */
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Activiteit_Documenten`(
-`ID`VARCHAR(64) NOT NULL,
-`DocumentNummer`VARCHAR(4000) NOT NULL,
-`Soort`VARCHAR(4000) NULL,
-`Onderwerp`VARCHAR(4000) NULL,
-`Datum` DATETIME null,
-`VolgNummer` INT NULL,
-`Vergaderjaar` varchar(9) null,
-`Kamer` varchar(4000) null,
-`AangemaaktOp` datetime null,
-`GewijzigdOp` datetime null,
-`Citeertitel` varchar(200) null,
-`Alias` varchar(200) null,
-`DatumRegistratie` DATETIME NULL,
-`DatumOntvangst` DATETIME NULL,
-`AanhangselNummer` varchar(4000) NULL,
-`KenmerkAfzender` varchar(4000) null,
-`SID_Activiteit` varchar(64) not null,
-INDEX (`ID`) );
-
-
-/* Activiteit_VervangenDoor (identiek aan activiteit) */
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Activiteit_VervangenDoor`(`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,`Onderwerp`VARCHAR(4000) NULL,`Soort`VARCHAR(4000) NULL,
-`DatumSoort`varchar(4000) NULL,
-`Aanvangstijd`DATETIME NULL,`EindTijd`DATETIME NULL,
-`Locatie`varchar(4000)  NULL,`Besloten`BOOL NULL,
-`Status`varchar(4000)  NULL,`Vergaderjaar`varchar(4000)  NULL,
-`Kamer`varchar(4000)  NULL,`Noot`varchar(4000)  NULL,
-`AangemaaktOp`DATETIME NULL,`GewijzigdOp`DATETIME NULL,
-`VRSNummer`varchar(4000) NULL,`Voortouwnaam`varchar(200) NULL,
-`Voortouwafkorting`varchar(50) NULL,`Voortouwkortenaam`varchar(50)NULL,
- INDEX (`ID`) );
- 
-
-/* Activiteit_Agendapunten (identiek aan agendapunten) */
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Activiteit_Agendapunten`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`Aanvangstijd`DATETIME NULL,`EindTijd`DATETIME NULL,
-`Volgorde` int null,
-`Rubriek` varchar(4000) null,
-`Noot` varchar(4000) null,
-`Status` varchar(4000) null,
-`AangemaaktOp` datetime null,
-`GewijzigdOp` datetime null,
-`SID_Activiteit` varchar(64) not null,
-INDEX (`ID`) );
-
-
-/* Activiteit_Zaken (identiek aan Zaken) */
-
-/*
-  Zaken
-  Somehow KamerStukDossierId is missing
-  This will be updated!
-*/
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Activiteit_Zaken`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Soort`varchar(4000) NULL,
-`Titel`VARCHAR(4000) NULL,
-`CiteerTitel`VARCHAR(4000) NULL,
-`Alias`VARCHAR(4000) NULL,
-`Status`VARCHAR(4000) NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`DatumStart`DATETIME NOT NULL,
-`Kamer`int  NULL,
-`GrondslagVoorhang`VARCHAR(4000) NULL,
-`Termijn`datetime null,
-`Vergaderjaar`varchar(9) NOT NULL,
-              /*`kamerStukDossierId`VARCHAR(64) NULL, not available*/
-`VolgNummer`int not  NULL,
-`HuidigeBehandelStatus` varchar(1) not null,
-`Afgedaan` bool null,
-`GrootProject` bool null,
-`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,
-`SID_Activiteit`VARCHAR(64) NOT NULL ,
- PRIMARY KEY (`ID`) );
-
- /* Zaken */
-
+ LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken.tsv' INTO TABLE `parlis`.`Zaken`
+ FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' LINES TERMINATED 
+ BY '\n' STARTING BY '' IGNORE 1 LINES;
 
 
 /* 
@@ -275,187 +60,250 @@ Zaken related data
 
 /* Activiteiten related to Zaken */
 
-CREATE TABLE IF NOT EXISTS `parlis`.`Zaak_Activiteiten`(`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT
-NULL,`Onderwerp`VARCHAR(4000)NULL,`Soort`VARCHAR(4000)
-NULL, `DatumSoort`varchar(4000) NULL,
-`Datum`DATETIME NULL, /* apparently differs from Activiteiten)*/
-`Aanvangstijd`DATETIME NULL,`EindTijd`DATETIME NULL,
-`Locatie`varchar(4000)  NULL,`Besloten`BOOL NULL,
-`Status`varchar(4000)  NULL,`Vergaderjaar`varchar(4000)  NULL,
-`Kamer`varchar(4000)  NULL,`Noot`varchar(4000)  NULL,
-`AangemaaktOp`DATETIME NULL,`GewijzigdOp`DATETIME NULL,
-`VRSNummer`varchar(4000) NULL,`Voortouwnaam`varchar(200) NULL,
-`Voortouwafkorting`varchar(50) NULL,`Voortouwkortenaam`varchar(50)NULL,
-`SID_Zaak`VARCHAR(64) NOT NULL,
- PRIMARY KEY (`ID`) );
+CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_Activiteiten`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Onderwerp`VARCHAR(4000)NULL,
+  `Soort`VARCHAR(4000) NULL,
+  `DatumSoort`varchar(4000) NULL,
+  `Datum` DATETIME NULL,
+  `Aanvangstijd`DATETIME NULL,
+  `EindTijd`DATETIME NULL,
+  `Locatie`varchar(4000)  NULL,
+  `Besloten`BOOL NULL,
+  `Status`varchar(4000)  NULL,
+  `Vergaderjaar`varchar(4000)  NULL,
+  `Kamer`varchar(4000)  NULL,
+  `Noot`varchar(4000)  NULL,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `VRSNummer`varchar(4000) NULL,
+  `Voortouwnaam`varchar(200) NULL,
+  `Voortouwafkorting`varchar(50) NULL,
+  `Voortouwkortenaam`varchar(50)NULL,
+  `SID_Zaak`VARCHAR(64) NOT NULL,
+  PRIMARY KEY (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_Activiteiten.tsv' INTO TABLE `parlis`.`Zaken_Activiteiten`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' LINES TERMINATED 
+BY '\n' STARTING BY '' IGNORE 1 LINES;
 
 /* Agendapunten */
 
 CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_Agendapunten`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`Aanvangstijd`DATETIME NULL,`EindTijd`DATETIME NULL,
-`Volgorde` int null,
-`Rubriek` varchar(4000) null,
-`Noot` varchar(4000) null,
-`Status` varchar(4000) null,
-`AangemaaktOp` datetime null,
-`GewijzigdOp` datetime null,
-`SID_Zaak` varchar(64) not null,
-INDEX (`ID`) );
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `Aanvangstijd`DATETIME NULL,
+  `EindTijd`DATETIME NULL,
+  `Volgorde` int null,
+  `Rubriek` varchar(4000) null,
+  `Noot` varchar(4000) null,
+  `Status` varchar(4000) null,
+  `AangemaaktOp` datetime null,
+  `GewijzigdOp` datetime null,
+  `SID_Zaak` varchar(64) not null,
+  PRIMARY KEY(`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_Agendapunten.tsv' INTO TABLE
+`parlis`.`Zaken_Agendapunten`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
 
 /* Besluiten*/
 
-CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_Besluiten` (`ID` VARCHAR(64) NOT NULL,
-`Soort` VARCHAR(1) NOT NULL,  `StemmingsSoort` VARCHAR(4000) NULL,
-`VoorstelText` varchar(1) NOT NULL, `BesluitText` VARCHAR(4000) NULL,
-`AangemaaktOp` DATETIME NULL, `GewijzigdOp` DATETIME NULL,
-`Opmerking` VARCHAR(4000) NULL ,`Status` VARCHAR(4000) NULL,
-`SID_Zaak` varchar(64) not null,
-INDEX(`ID`));
+CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_Besluiten` (
+  `ID` VARCHAR(64) NOT NULL,
+  `Soort` VARCHAR(1) NOT NULL,
+  `StemmingsSoort` VARCHAR(4000) NULL,
+  `VoorstelText` varchar(1) NOT NULL,
+  `BesluitText` VARCHAR(4000) NULL,
+  `AangemaaktOp` DATETIME NULL,
+  `GewijzigdOp` DATETIME NULL,
+  `Opmerking` VARCHAR(4000) NULL ,
+  `Status` VARCHAR(4000) NULL,
+  `SID_Zaak` varchar(64) not null,
+  INDEX(`ID`)
+);
 
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_Besluiten.tsv' INTO TABLE
+`parlis`.`Zaken_Besluiten`
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\'
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
 
 /* Documenten */
 
-CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_Documenten`(`ID`VARCHAR(64) NOT NULL,
-`DocumentNummer`VARCHAR(50) NOT NULL,
-/* `kamerStukDossierId`VARCHAR(64)NULL,*/
-/* `Titel`VARCHAR(4000) NULL,
-`Soort`varchar(4000) NULL, */
+CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_Documenten`(
+  `ID`VARCHAR(64) NOT NULL,
+  `DocumentNummer`VARCHAR(50) NOT NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `Soort`varchar(4000) NULL,
+  `Onderwerp`varchar(4000) NULL,
+  `Datum`DATETIME NOT NULL,
+  `VolgNummer`int not  NULL,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `Kamer`int  NULL,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `Citeertitel`varchar(200)  NULL,
+  `Alias`varchar(200)  NULL,
+  `DatumRegistratie`DATETIME NULL,
+  `DatumOntvangst`DATETIME NULL,
+  `AanhangselNummer`varchar(4000) NULL,
+  `KenmerkAfzender`varchar(4000) NULL,
+  `SID_Zaak` varchar(64) not null,
+  PRIMARY KEY (`ID`)
+);
 
-`Onderwerp`varchar(4000) NULL,`Datum`DATETIME NOT NULL,
-`VolgNummer`int not  NULL,`Vergaderjaar`varchar(9) NOT NULL,
-`Kamer`int  NULL,`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,`Citeertitel`varchar(200)  NULL,
-`Alias`varchar(200)  NULL,`DatumRegistratie`DATETIME NULL,
-`DatumOntvangst`DATETIME NULL,`AanhangselNummer`varchar(4000) NULL,
-`KenmerkAfzender`varchar(4000) NULL,
-`SID_Zaak` varchar(64) not null,
- INDEX (`ID`) );
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_Documenten.tsv' INTO TABLE `parlis`.`Zaken_Documenten` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
 
 
 /* Zaken geralteerd Naar  (type Zaak*/
 
 CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_GerelateerdNaar`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Soort`varchar(4000) NULL,
-`Titel`VARCHAR(4000) NULL,
-`CiteerTitel`VARCHAR(4000) NULL,
-`Alias`VARCHAR(4000) NULL,
-`Status`VARCHAR(4000) NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`DatumStart`DATETIME NOT NULL,
-`Kamer`int  NULL,
-`GrondslagVoorhang`VARCHAR(4000) NULL,
-`Termijn`datetime null,
-`Vergaderjaar`varchar(9) NOT NULL,
-             
- /*`kamerStukDossierId`VARCHAR(64) NULL, not available*/
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Soort`varchar(4000) NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `CiteerTitel`VARCHAR(4000) NULL,
+  `Alias`VARCHAR(4000) NULL,
+  `Status`VARCHAR(4000) NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `DatumStart`DATETIME NOT NULL,
+  `Kamer`int  NULL,
+  `GrondslagVoorhang`VARCHAR(4000) NULL,
+  `Termijn`datetime null,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `VolgNummer`int not  NULL,
+  `HuidigeBehandelStatus` varchar(1) not null,
+  `Afgedaan` bool null,
+  `GrootProject` bool null,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `AgendapuntZakenVolgorde` INT NULL,
+  `SID_Zaak` varchar(64) not null,
+   INDEX (`ID`)
+);
 
-`VolgNummer`int not  NULL,
-`HuidigeBehandelStatus` varchar(1) not null,
-`Afgedaan` bool null,
-`GrootProject` bool null,
-`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,
-/*`SID_Activiteit`VARCHAR(64) NOT NULL */ /* Removed: Backlink Added by SDK
- * ,*/
-`SID_Zaak` varchar(64) not null,
- INDEX (`ID`) );
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_GerelateerdNaar.tsv' INTO TABLE `parlis`.`Zaken_GerelateerdNaar` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
 
 /* Zaken geralteerd Overig  (type Zaak*/
 
 CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_GerelateerdOverig`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Soort`varchar(4000) NULL,
-`Titel`VARCHAR(4000) NULL,
-`CiteerTitel`VARCHAR(4000) NULL,
-`Alias`VARCHAR(4000) NULL,
-`Status`VARCHAR(4000) NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`DatumStart`DATETIME NOT NULL,
-`Kamer`int  NULL,
-`GrondslagVoorhang`VARCHAR(4000) NULL,
-`Termijn`datetime null,
-`Vergaderjaar`varchar(9) NOT NULL,
-              
-/*`kamerStukDossierId`VARCHAR(64) NULL, not available*/
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Soort`varchar(4000) NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `CiteerTitel`VARCHAR(4000) NULL,
+  `Alias`VARCHAR(4000) NULL,
+  `Status`VARCHAR(4000) NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `DatumStart`DATETIME NOT NULL,
+  `Kamer`int  NULL,
+  `GrondslagVoorhang`VARCHAR(4000) NULL,
+  `Termijn`datetime null,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `VolgNummer`int not  NULL,
+  `HuidigeBehandelStatus` varchar(1) not null,
+  `Afgedaan` bool null,
+  `GrootProject` bool null,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `AgendapuntZakenVolgorde` INT NULL,
+  `SID_Zaak` varchar(64) not null,
+   INDEX (`ID`)
+);
 
-`VolgNummer`int not  NULL,
-`HuidigeBehandelStatus` varchar(1) not null,
-`Afgedaan` bool null,
-`GrootProject` bool null,
-`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,
-/*`SID_Activiteit`VARCHAR(64) NOT NULL */ /* Removed: Backlink Added by SDK
- * ,*/
-`SID_Zaak` varchar(64) not null,
- INDEX (`ID`) );
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_GerelateerdOverig.tsv' INTO TABLE `parlis`.`Zaken_GerelateerdOverig` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
 
 /* Zaken geralteerd Vanuit  (type Zaak*/
 
 CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_GerelateerdVanuit`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Soort`varchar(4000) NULL,
-`Titel`VARCHAR(4000) NULL,
-`CiteerTitel`VARCHAR(4000) NULL,
-`Alias`VARCHAR(4000) NULL,
-`Status`VARCHAR(4000) NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`DatumStart`DATETIME NOT NULL,
-`Kamer`int  NULL,
-`GrondslagVoorhang`VARCHAR(4000) NULL,
-`Termijn`datetime null,
-`Vergaderjaar`varchar(9) NOT NULL,
-              
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Soort`varchar(4000) NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `CiteerTitel`VARCHAR(4000) NULL,
+  `Alias`VARCHAR(4000) NULL,
+  `Status`VARCHAR(4000) NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `DatumStart`DATETIME NOT NULL,
+  `Kamer`int  NULL,
+  `GrondslagVoorhang`VARCHAR(4000) NULL,
+  `Termijn`datetime null,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `VolgNummer`int not  NULL,
+  `HuidigeBehandelStatus` varchar(1) not null,
+  `Afgedaan` bool null,
+  `GrootProject` bool null,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `AgendapuntZakenVolgorde` INT NULL,
+  `SID_Zaak` varchar(64) not null,
+   INDEX (`ID`)
+);
 
-/*`kamerStukDossierId`VARCHAR(64) NULL, not available*/
-
-`VolgNummer`int not  NULL,
-`HuidigeBehandelStatus` varchar(1) not null,
-`Afgedaan` bool null,
-`GrootProject` bool null,
-`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,
-/*`SID_Activiteit`VARCHAR(64) NOT NULL */ /* Removed: Backlink Added by SDK
- * ,*/
-`SID_Zaak` varchar(64) not null,
- INDEX (`ID`) );
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_GerelateerdVanuit.tsv' INTO TABLE `parlis`.`Zaken_GerelateerdVanuit` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
 
 
 /* Zaken geralteerd HoofOverig  (type Zaak*/
 
 CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_HoofdOverig`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Soort`varchar(4000) NULL,
-`Titel`VARCHAR(4000) NULL,
-`CiteerTitel`VARCHAR(4000) NULL,
-`Alias`VARCHAR(4000) NULL,
-`Status`VARCHAR(4000) NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`DatumStart`DATETIME NOT NULL,
-`Kamer`int  NULL,
-`GrondslagVoorhang`VARCHAR(4000) NULL,
-`Termijn`datetime null,
-`Vergaderjaar`varchar(9) NOT NULL,
-              /*`kamerStukDossierId`VARCHAR(64) NULL, not available*/
-`VolgNummer`int not  NULL,
-`HuidigeBehandelStatus` varchar(1) not null,
-`Afgedaan` bool null,
-`GrootProject` bool null,
-`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,
-/*`SID_Activiteit`VARCHAR(64) NOT NULL */ /* Removed: Backlink Added by SDK
- * ,*/
-`SID_Zaak` varchar(64) not null,
- INDEX (`ID`) );
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Soort`varchar(4000) NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `CiteerTitel`VARCHAR(4000) NULL,
+  `Alias`VARCHAR(4000) NULL,
+  `Status`VARCHAR(4000) NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `DatumStart`DATETIME NOT NULL,
+  `Kamer`int  NULL,
+  `GrondslagVoorhang`VARCHAR(4000) NULL,
+  `Termijn`datetime null,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `VolgNummer`int not  NULL,
+  `HuidigeBehandelStatus` varchar(1) not null,
+  `Afgedaan` bool null,
+  `GrootProject` bool null,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `AgendapuntZakenVolgorde` INT NULL,
+  `SID_Zaak` varchar(64) not null,
+   INDEX (`ID`)
+);
 
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_HoofdOverig.tsv' INTO TABLE `parlis`.`Zaken_HoofdOverig` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
+
+/* Zaak Statussen */
+
+CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_Statussen`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Soort` varchar(4000) null,
+  `Datum` datetime null,
+  `AangemaaktOp` datetime null,
+  `GewijzigdOp` datetime null,
+  `SID_Zaak` varchar(64) not null,
+  INDEX (`ID`)
+);
+
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_Statussen.tsv' INTO TABLE `parlis`.`Zaken_Statussen` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
 
 /* Zaak-KamerstukDossier */
 
@@ -476,129 +324,89 @@ INDEX (`ID`) );
 
 /* Kamerstuk dossier doenst have activiteit ID ??*/
 
-
-
-/* Zaak Statussen */
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_Statussen`(
-`ID`VARCHAR(64) NOT NULL,
-/* `besluitId`VARCHAR(64) NOT NULL, deze missen we in de API*/
-`Soort` varchar(4000) null,
-`Datum` datetime null,
-`AangemaaktOp` datetime null,
-`GewijzigdOp` datetime null,
-`SID_Zaak` varchar(64) not null,
-INDEX (`ID`) );
-
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_KamerstukDossier.tsv' INTO TABLE `parlis`.`Zaken_KamerstukDossier` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
 
 
 /* Zaak VervangenDoor */
 
 CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_VervangenDoor`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Soort`varchar(4000) NULL,
-`Titel`VARCHAR(4000) NULL,
-`CiteerTitel`VARCHAR(4000) NULL,
-`Alias`VARCHAR(4000) NULL,
-`Status`VARCHAR(4000) NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`DatumStart`DATETIME NOT NULL,
-`Kamer`int  NULL,
-`GrondslagVoorhang`VARCHAR(4000) NULL,
-`Termijn`datetime null,
-`Vergaderjaar`varchar(9) NOT NULL,
-              
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Soort`varchar(4000) NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `CiteerTitel`VARCHAR(4000) NULL,
+  `Alias`VARCHAR(4000) NULL,
+  `Status`VARCHAR(4000) NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `DatumStart`DATETIME NOT NULL,
+  `Kamer`int  NULL,
+  `GrondslagVoorhang`VARCHAR(4000) NULL,
+  `Termijn`datetime null,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `VolgNummer`int not  NULL,
+  `HuidigeBehandelStatus` varchar(1) not null,
+  `Afgedaan` bool null,
+  `GrootProject` bool null,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `AgendapuntZakenVolgorde` INT NULL,
+  `SID_Zaak` varchar(64) not null,
+   INDEX (`ID`)
+);
 
-/*`kamerStukDossierId`VARCHAR(64) NULL, not available*/
-
-
-`VolgNummer`int not  NULL,
-`HuidigeBehandelStatus` varchar(1) not null,
-`Afgedaan` bool null,
-`GrootProject` bool null,
-`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,
-/*`SID_Activiteit`VARCHAR(64) NOT NULL */ /* Removed: Backlink Added by SDK
- * ,*/
-`SID_Zaak` varchar(64) not null,
- INDEX (`ID`) );
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_VervangenDoor.tsv' INTO TABLE `parlis`.`Zaken_VervangenDoor` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
 
 /* Zaken geralteerd vervangen vanuit (type Zaak*/
 
 CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_VervangenVanuit`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Soort`varchar(4000) NULL,
-`Titel`VARCHAR(4000) NULL,
-`CiteerTitel`VARCHAR(4000) NULL,
-`Alias`VARCHAR(4000) NULL,
-`Status`VARCHAR(4000) NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`DatumStart`DATETIME NOT NULL,
-`Kamer`int  NULL,
-`GrondslagVoorhang`VARCHAR(4000) NULL,
-`Termijn`datetime null,
-`Vergaderjaar`varchar(9) NOT NULL,
-              /*`kamerStukDossierId`VARCHAR(64) NULL, not available*/
-`VolgNummer`int not  NULL,
-`HuidigeBehandelStatus` varchar(1) not null,
-`Afgedaan` bool null,
-`GrootProject` bool null,
-`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,
-/*`SID_Activiteit`VARCHAR(64) NOT NULL */ /* Removed: Backlink Added by SDK
- * ,*/
-`SID_Zaak` varchar(64) not null,
- INDEX (`ID`) );
+  `ID`VARCHAR(64) NOT NULL,
+  `Nummer`VARCHAR(50) NOT NULL,
+  `Soort`varchar(4000) NULL,
+  `Titel`VARCHAR(4000) NULL,
+  `CiteerTitel`VARCHAR(4000) NULL,
+  `Alias`VARCHAR(4000) NULL,
+  `Status`VARCHAR(4000) NULL,
+  `Onderwerp`varchar(4000) NOT NULL,
+  `DatumStart`DATETIME NOT NULL,
+  `Kamer`int  NULL,
+  `GrondslagVoorhang`VARCHAR(4000) NULL,
+  `Termijn`datetime null,
+  `Vergaderjaar`varchar(9) NOT NULL,
+  `VolgNummer`int not  NULL,
+  `HuidigeBehandelStatus` varchar(1) not null,
+  `Afgedaan` bool null,
+  `GrootProject` bool null,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `AgendapuntZakenVolgorde` INT NULL,
+  `SID_Zaak` varchar(64) not null,
+   INDEX (`ID`)
+);
 
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_VervangenVanuit.tsv' INTO TABLE `parlis`.`Zaken_VervangenVanuit` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
 
 /* Zaken_ Actoren */
 
 
-CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_Actoren`(
-`ID`VARCHAR(64) NOT NULL,
-`Naam`VARCHAR(200) NULL,
-`Functie`varchar(200) NULL,
-`Partij`VARCHAR(200) NULL,
-`Relatie`VARCHAR(4000) NULL,
-`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,
-`ActorAbreviatedName`VARCHAR(200) NULL,
-`SID_Zaak` varchar(64) not null,
- INDEX (`ID`) );
+CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_ZaakActoren`(
+  `ID`VARCHAR(64) NOT NULL,
+  `Naam`VARCHAR(200) NULL,
+  `Functie`varchar(200) NULL,
+  `Partij`VARCHAR(200) NULL,
+  `Relatie`VARCHAR(4000) NULL,
+  `AangemaaktOp`DATETIME NULL,
+  `GewijzigdOp`DATETIME NULL,
+  `ActorAbreviatedName`VARCHAR(200) NULL,
+  `SID_Zaak` varchar(64) not null,
+  INDEX (`ID`) 
+);
 
-/* Zaken-Zaken */
-
-CREATE TABLE IF NOT EXISTS `parlis`.`Zaken_Zaken`(
-`ID`VARCHAR(64) NOT NULL,
-`Nummer`VARCHAR(50) NOT NULL,
-`Soort`varchar(4000) NULL,
-`Titel`VARCHAR(4000) NULL,
-`CiteerTitel`VARCHAR(4000) NULL,
-`Alias`VARCHAR(4000) NULL,
-`Status`VARCHAR(4000) NULL,
-`Onderwerp`varchar(4000) NOT NULL,
-`DatumStart`DATETIME NOT NULL,
-`Kamer`int  NULL,
-`GrondslagVoorhang`VARCHAR(4000) NULL,
-`Termijn`datetime null,
-`Vergaderjaar`varchar(9) NOT NULL,
-              
-
-/*`kamerStukDossierId`VARCHAR(64) NULL, not available*/
-
-`VolgNummer`int not  NULL,
-`HuidigeBehandelStatus` varchar(1) not null,
-`Afgedaan` bool null,
-`GrootProject` bool null,
-`AangemaaktOp`DATETIME NULL,
-`GewijzigdOp`DATETIME NULL,
-/*`SID_Activiteit`VARCHAR(64) NOT NULL */ /* Removed: Backlink Added by SDK
- * ,*/
-`SID_Zaak` varchar(64) not null,
- INDEX (`ID`) );
-
-
-
-
+LOAD DATA LOCAL INFILE  'udata/Zaken/Zaken_ZaakActoren.tsv' INTO TABLE `parlis`.`Zaken_ZaakActoren` 
+FIELDS TERMINATED BY '\t' ENCLOSED BY '' ESCAPED BY '\\' 
+LINES TERMINATED BY '\n' STARTING BY '' IGNORE 1 LINES;
